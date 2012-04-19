@@ -314,8 +314,17 @@ public final class GuiBoard
             return;
         if (point == HexPoint.get("resign"))
             return;
-
 	getField(point).setAlphaColor(color);
+        repaint();
+    }
+
+    public void setAlphaColor(HexPoint point, Color color, float blend)
+    {
+        if (point == HexPoint.get("swap-pieces"))
+            return;
+        if (point == HexPoint.get("resign"))
+            return;
+	getField(point).setAlphaColor(color, blend);
         repaint();
     }
 

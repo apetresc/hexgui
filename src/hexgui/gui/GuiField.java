@@ -84,6 +84,18 @@ public class GuiField
     public void setAlphaColor(Color c)
     {
 	m_alpha_color = c;
+        //m_alpha_blend = 0.3f;
+        m_alpha_blend = 1.0f;
+	if (c == null) 
+	    clearAttributes(DRAW_ALPHA);
+	else 
+	    setAttributes(DRAW_ALPHA);
+    }
+
+    public void setAlphaColor(Color c, float blend)
+    {
+	m_alpha_color = c;
+        m_alpha_blend = blend;
 	if (c == null) 
 	    clearAttributes(DRAW_ALPHA);
 	else 
@@ -91,6 +103,8 @@ public class GuiField
     }
 
     public Color getAlphaColor() { return m_alpha_color; }
+
+    public float getAlphaBlend() { return m_alpha_blend; }
 
     public void setSelected(boolean f) 
     { 
@@ -202,7 +216,8 @@ public class GuiField
 	    return;
 
 	m_graphics2D.setComposite(AlphaComposite.
-				  getInstance(AlphaComposite.SRC_OVER, 0.3f));
+				  getInstance(AlphaComposite.SRC_OVER, 
+                                              0.3f));
 	m_graphics.setColor(m_alpha_color);
 	m_graphics.fillRect(m_width/2 - m_width/4, m_height/2 - m_height/4,
 			    m_width/2, m_height/2);
@@ -237,6 +252,7 @@ public class GuiField
     private int m_attributes;
 
     private Color m_alpha_color;
+    private float m_alpha_blend;
 
     private String m_text;
 

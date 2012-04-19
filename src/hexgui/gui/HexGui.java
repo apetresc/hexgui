@@ -846,6 +846,9 @@ public final class HexGui
         case GROUP:
             cb = new Runnable() { public void run() { cbGroupGet(); } };
             break;
+        case GFX:
+            cb = new Runnable() { public void run() { cbGfx(); } };
+            break;
         case INFERIOR:
              cb = new Runnable() { public void run() {cbShowInferiorCells();}};
              break;
@@ -1161,6 +1164,29 @@ public final class HexGui
                 m_guiboard.setAlphaColor(points.get(i), Color.green);
             }
         }
+	m_guiboard.repaint();
+    }
+
+    public void cbGfx()
+    {
+	if (!m_white.wasSuccess())
+	    return;
+        m_guiboard.clearMarks();
+        m_guiboard.aboutToDirtyStones();
+        
+        String fx = m_white.getResponse();
+        int inf = fx.indexOf("INFLUENCE");
+        
+        Vector<Pair<String, String> > pairs =
+            StringUtils.parseStringPairList(fx.substring(inf + 10));
+        for (int i=0; i<pairs.size(); i++)
+        {
+	    HexPoint point = HexPoint.get(pairs.get(i).first);
+            String value = pairs.get(i).second;
+            float v = new Float(value).floatValue();
+            m_guiboard.setAlphaColor(point, new Color(0, v, 1-v), 0.7f);
+	}
+
 	m_guiboard.repaint();
     }
 

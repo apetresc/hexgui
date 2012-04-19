@@ -319,7 +319,8 @@ public abstract class BoardDrawerBase
                     continue;
 
                 g2d.setComposite(AlphaComposite.
-                                 getInstance(AlphaComposite.SRC_OVER, 0.3f));
+                                 getInstance(AlphaComposite.SRC_OVER, 
+                                             field[i].getAlphaBlend()));
                 
                 g2d.setColor(color);
 		g2d.fillPolygon(m_outline[i]);
