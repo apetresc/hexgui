@@ -84,8 +84,7 @@ public class GuiField
     public void setAlphaColor(Color c)
     {
 	m_alpha_color = c;
-        //m_alpha_blend = 0.3f;
-        m_alpha_blend = 1.0f;
+        m_alpha_blend = 0.3f;
 	if (c == null) 
 	    clearAttributes(DRAW_ALPHA);
 	else 
