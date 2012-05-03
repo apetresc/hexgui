@@ -550,8 +550,9 @@ public final class HexGui
 	    cur = cur.getChildContainingNode(m_current);
             if (cur.hasMove())
                 htpPlay(cur.getMove());
-            else if (cur.hasSetup())
+            if (cur.hasSetup()) {
                 playSetup(cur);
+            }
 	}
         htpShowboard();
     }
@@ -1890,7 +1891,7 @@ public final class HexGui
                                        + move.getPoint().toString());
             }
         }
-        else if (node.hasSetup())
+        if (node.hasSetup())
         {
             playSetup(node);
         }
@@ -1904,7 +1905,7 @@ public final class HexGui
             m_guiboard.setColor(move.getPoint(), HexColor.EMPTY);
             htpUndo();
         }
-        else if (node.hasSetup())
+        if (node.hasSetup())
         {
             undoSetup(node);
             m_statusbar.setMessage("Undo setup stones");
@@ -1959,6 +1960,8 @@ public final class HexGui
 
             undoNode(m_current);
 	    m_current = m_current.getParent();
+            if (m_current.hasSetup())
+                playSetup(m_current);
 	}
         stopClock();
         refreshGuiForBoardState();
@@ -2035,7 +2038,7 @@ public final class HexGui
 
     private void markLastPlayedStone()
     {
-        if (m_current == m_root || m_current.hasSetup())
+        if (m_current == m_root || !m_current.hasMove())
         {
             m_guiboard.markSwapPlayed(null);
 	    m_guiboard.markLastPlayed(null);
