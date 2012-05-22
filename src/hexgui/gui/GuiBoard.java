@@ -28,6 +28,7 @@ public final class GuiBoard
     public interface Listener
     {
 	void fieldClicked(HexPoint point, boolean ctrl, boolean shift);
+        void fieldDoubleClicked(HexPoint point, boolean ctrl, boolean shift);
     }
 
     private static final boolean DEFAULT_FLIPPED = true;
@@ -64,7 +65,10 @@ public final class GuiBoard
                 int modifiers = e.getModifiers();
                 boolean ctrl = (modifiers & ActionEvent.CTRL_MASK) != 0;
                 boolean shift = (modifiers & ActionEvent.SHIFT_MASK) != 0;
-		m_listener.fieldClicked(f.getPoint(), ctrl, shift);
+                if (e.getClickCount() >= 2)
+                    m_listener.fieldDoubleClicked(f.getPoint(), ctrl, shift);
+                else
+                    m_listener.fieldClicked(f.getPoint(), ctrl, shift);
 	    }
 	};
 	m_boardPanel.addMouseListener(mouseAdapter);

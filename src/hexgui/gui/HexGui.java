@@ -1687,10 +1687,14 @@ public final class HexGui
             {
                 if (m_guiboard.getColor(point) == HexColor.EMPTY)
                 {
-                    addSetupMove(new Move(point, HexColor.WHITE));
+                    m_current.addSetup(HexColor.WHITE, point);
                 }
             }
         }
+    }
+
+    public void fieldDoubleClicked(HexPoint point, boolean ctrl, boolean shift)
+    {
     }
 
     public Vector<HexPoint> getSelectedCells()
@@ -1793,6 +1797,7 @@ public final class HexGui
     private void addSetupMove(Move move)
     {
         // if current node doesn't have setup info, create a setup node
+        
         if (!m_current.hasSetup())
         {
             Node setup = new Node();
@@ -1805,7 +1810,7 @@ public final class HexGui
         // add the setup stone to the set of setup stones
         m_current.addSetup(move.getColor(), move.getPoint());
         m_current.setPlayerToMove(move.getColor());
-
+        
         // and set the color to play next
         m_tomove = move.getColor();
         m_toolbar.setToMove(m_tomove.toString());
