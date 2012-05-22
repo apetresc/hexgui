@@ -1177,9 +1177,10 @@ public final class HexGui
         
         String fx = m_white.getResponse();
         int inf = fx.indexOf("INFLUENCE");
+        int text = fx.indexOf("TEXT");
         
         Vector<Pair<String, String> > pairs =
-            StringUtils.parseStringPairList(fx.substring(inf + 10));
+            StringUtils.parseStringPairList(fx.substring(inf + 10, text));
         for (int i=0; i<pairs.size(); i++)
         {
 	    HexPoint point = HexPoint.get(pairs.get(i).first);
@@ -1187,7 +1188,7 @@ public final class HexGui
             float v = new Float(value).floatValue();
             m_guiboard.setAlphaColor(point, new Color(0, v, 1-v), 0.7f);
 	}
-
+        m_statusbar.setMessage(fx.substring(text+5));
 	m_guiboard.repaint();
     }
 
