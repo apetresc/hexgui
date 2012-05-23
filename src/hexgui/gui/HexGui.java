@@ -1687,7 +1687,7 @@ public final class HexGui
             {
                 if (m_guiboard.getColor(point) == HexColor.EMPTY)
                 {
-                    m_current.addSetup(HexColor.WHITE, point);
+                    addSetupMove(new Move(point, HexColor.WHITE));
                 }
             }
         }
@@ -1797,7 +1797,6 @@ public final class HexGui
     private void addSetupMove(Move move)
     {
         // if current node doesn't have setup info, create a setup node
-        
         if (!m_current.hasSetup())
         {
             Node setup = new Node();
