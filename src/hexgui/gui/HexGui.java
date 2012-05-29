@@ -1177,7 +1177,15 @@ public final class HexGui
         
         String fx = m_white.getResponse();
         int inf = fx.indexOf("INFLUENCE");
+        if (inf < 0)
+            return;
+        boolean hasText = false;
         int text = fx.indexOf("TEXT");
+        if (text < 0)
+            text = fx.length();
+        else {
+            hasText = true;
+        }
         
         Vector<Pair<String, String> > pairs =
             StringUtils.parseStringPairList(fx.substring(inf + 10, text));
@@ -1188,7 +1196,8 @@ public final class HexGui
             float v = new Float(value).floatValue();
             m_guiboard.setAlphaColor(point, new Color(0, v, 1-v), 0.7f);
 	}
-        m_statusbar.setMessage(fx.substring(text+5));
+        if (hasText)
+            m_statusbar.setMessage(fx.substring(text+5));
 	m_guiboard.repaint();
     }
 
