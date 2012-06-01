@@ -23,6 +23,8 @@ public enum AnalyzeType
         
     INFERIOR,
 
+    MOVE,
+
     NONE,
 
     PARAM,

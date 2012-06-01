@@ -853,6 +853,9 @@ public final class HexGui
         case INFERIOR:
              cb = new Runnable() { public void run() {cbShowInferiorCells();}};
              break;
+        case MOVE:
+            cb = new Runnable() { public void run() { cbGenMove(); } };
+            break;
         case PLIST:
             cb = new Runnable() { public void run() { cbDisplayPointList(); } };
             break;

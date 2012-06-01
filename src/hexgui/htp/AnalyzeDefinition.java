@@ -43,6 +43,8 @@ public class AnalyzeDefinition
             m_type = AnalyzeType.HPSTRING;
         else if (typeStr.equals("inferior"))
             m_type = AnalyzeType.INFERIOR;
+        else if (typeStr.equals("move"))
+            m_type = AnalyzeType.MOVE;
         else if (typeStr.equals("param"))
             m_type = AnalyzeType.PARAM;
         else if (typeStr.equals("plist"))
