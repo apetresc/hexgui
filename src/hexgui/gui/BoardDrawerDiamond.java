@@ -5,6 +5,8 @@
 package hexgui.gui;
 
 import hexgui.util.Hexagon;
+import hexgui.hex.HexColor;
+import hexgui.hex.HexPoint;
 
 import javax.swing.*;          
 import java.awt.*;
@@ -25,6 +27,14 @@ public class BoardDrawerDiamond extends BoardDrawerBase
 	m_aspect_ratio = ASPECT_RATIO;
     }
 
+    /** Returns the location in the window of the field with
+	coordinates <code>(x,y)</code>.  Coordinates increase to the
+	right and down, with the top left of the board having
+	coordinates <code>(0,0)</code>.  Negative values are acceptable.
+	@param x the x coordinate of the field.
+	@param y the y coordinate of the field.
+	@return the center of the field at <code>(x,y)</code>.
+    */
     protected Point getLocation(int x, int y)
     {
 	// yoffset will be positive when bwidth > bheight (to push the
@@ -38,6 +48,21 @@ public class BoardDrawerDiamond extends BoardDrawerBase
 	ret.y = m_marginY + yoffset + (m_bheight/2)*m_fieldHeight 
 	                  + (y - x)*m_fieldHeight/2;
 	return ret;
+    }
+
+    /** Returns the location of the field with HexPoint pos. */
+    protected Point getLocation(HexPoint pos)
+    {
+	if (pos == HexPoint.EAST) {
+	    return getLocation(m_bwidth+1, m_bheight/2-1);
+	} else if (pos == HexPoint.WEST) { 
+	    return getLocation(-2, m_bheight/2+1);
+	} else if (pos == HexPoint.SOUTH) { 
+	    return getLocation(m_bwidth/2-1, m_bheight+1);
+	} else if (pos == HexPoint.NORTH) { 
+	    return getLocation(m_bwidth/2+1, -2);
+	}
+	return getLocation(pos.x, pos.y);
     }
 
     protected int calcFieldWidth(int w, int h, int bw, int bh)
