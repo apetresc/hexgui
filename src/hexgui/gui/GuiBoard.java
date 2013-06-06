@@ -32,6 +32,9 @@ public final class GuiBoard
     }
 
     private static final boolean DEFAULT_FLIPPED = true;
+    
+    public static final int HEXBOARD = 0;
+    public static final int YBOARD = 1;
 
     /** Constructor. */
     public GuiBoard(Listener listener, GuiPreferences preferences)
@@ -41,7 +44,8 @@ public final class GuiBoard
 	m_preferences = preferences;
         m_arrows = new Vector<Pair<HexPoint, HexPoint>>();
 
-	initSize(m_preferences.getInt("gui-board-width"),
+	initSize(HEXBOARD, 
+                 m_preferences.getInt("gui-board-width"),
 		 m_preferences.getInt("gui-board-height"));
 
 	setDrawType(m_preferences.get("gui-board-type"));   
@@ -82,13 +86,22 @@ public final class GuiBoard
     */
     public void setDrawType(String name)
     {
-	if (name.equals("Go")) {
+        if (name.equals("Y")) {
+            m_drawer = new BoardDrawerY();
+            initSize(YBOARD, m_width, m_height);
+        } else if (name.equals("Go")) {
+            if (m_mode != HEXBOARD)
+                initSize(HEXBOARD, m_width, m_height);
 	    m_drawer = new BoardDrawerGo();
 	    m_preferences.put("gui-board-type", "Go");
 	} else if (name.equals("Diamond")) {
+            if (m_mode != HEXBOARD)
+                initSize(HEXBOARD, m_width, m_height);
 	    m_drawer = new BoardDrawerDiamond();
 	    m_preferences.put("gui-board-type", "Diamond");
 	} else if (name.equals("Flat")) {
+            if (m_mode != HEXBOARD)
+                initSize(HEXBOARD, m_width, m_height);
 	    m_drawer = new BoardDrawerFlat();
 	    m_preferences.put("gui-board-type", "Flat");
 	} else {
@@ -115,15 +128,24 @@ public final class GuiBoard
         repaint();
     }
 
+    public void initSize(int w, int h)
+    {
+        initSize(m_mode, w, h);
+    }
+
     /** Creates a board of the given dimensions.
         Dirty flag is set to false. 
+        @param m type of board to create (HEX or Y)
 	@param w width of the board in cells
 	@param h height of the board in cells
     */
-    public void initSize(int w, int h)
+    private void initSize(int m, int w, int h)
     {
-	System.out.println("GuiBoard.initSize: " + w + " " + h);
+	System.out.println("GuiBoard.initSize: " 
+                           + (m == HEXBOARD ? "(HEX) " : "(Y) ") 
+                           + w + " " + h);
 
+        m_mode = m;
 	m_width = w; 
 	m_height = h;
 	m_size = new Dimension(m_width, m_height);
@@ -131,17 +153,35 @@ public final class GuiBoard
         m_dirty_stones = false;
         clearArrows();
 
-        m_field = new GuiField[w*h+4];
-	for (int x=0; x<w*h; x++) {
-	    m_field[x] = new GuiField(HexPoint.get(x % w, x / w));
-	    m_field[x].setAttributes(GuiField.DRAW_CELL_OUTLINE);
-	}
-
-	m_field[w*h+0] = new GuiField(HexPoint.NORTH);
-	m_field[w*h+1] = new GuiField(HexPoint.SOUTH);
-	m_field[w*h+2] = new GuiField(HexPoint.WEST);
-	m_field[w*h+3] = new GuiField(HexPoint.EAST);
-	
+        if (m_mode == HEXBOARD) 
+        {
+            m_field = new GuiField[w*h+4];
+            for (int x=0; x<w*h; x++) {
+                m_field[x] = new GuiField(HexPoint.get(x % w, x / w));
+                m_field[x].setAttributes(GuiField.DRAW_CELL_OUTLINE);
+            }
+            m_field[w*h+0] = new GuiField(HexPoint.NORTH);
+            m_field[w*h+1] = new GuiField(HexPoint.SOUTH);
+            m_field[w*h+2] = new GuiField(HexPoint.WEST);
+            m_field[w*h+3] = new GuiField(HexPoint.EAST);
+        } 
+        else 
+        {
+            int n = w*(w+1)/2;
+            m_field = new GuiField[n+3];
+            for (int y=0,i=0; y<w; y++) {
+                for (int x=0; x<=y; x++,i++) {
+                    m_field[i] = new GuiField(HexPoint.get(x, y));
+                    m_field[i].setAttributes(GuiField.DRAW_CELL_OUTLINE);
+                }
+            }
+            m_field[n+0] = new GuiField(HexPoint.SOUTH);
+            m_field[n+0].setAttributes(GuiField.DRAW_CELL_OUTLINE);
+            m_field[n+1] = new GuiField(HexPoint.WEST);
+            m_field[n+1].setAttributes(GuiField.DRAW_CELL_OUTLINE);
+            m_field[n+2] = new GuiField(HexPoint.EAST);
+            m_field[n+2].setAttributes(GuiField.DRAW_CELL_OUTLINE);
+        }
 	clearAll();
         repaint();
     }
@@ -153,7 +193,7 @@ public final class GuiBoard
     */
     public void initSize(Dimension dim)
     {
-	initSize(dim.width, dim.height);
+	initSize(m_mode, dim.width, dim.height);
     }
 
     /** Gets the size of the board.
@@ -167,13 +207,21 @@ public final class GuiBoard
     /** Clears all marks and stones from the board. */
     public void clearAll()
     {
-	for (int x=0; x<m_field.length; x++) 
+	for (int x=0; x<m_field.length; x++)
 	    m_field[x].clear();
-
-	getField(HexPoint.NORTH).setColor(HexColor.BLACK);
-	getField(HexPoint.SOUTH).setColor(HexColor.BLACK);
-	getField(HexPoint.WEST).setColor(HexColor.WHITE);
-	getField(HexPoint.EAST).setColor(HexColor.WHITE);
+        if (m_mode == HEXBOARD) 
+        {
+            getField(HexPoint.NORTH).setColor(HexColor.BLACK);
+            getField(HexPoint.SOUTH).setColor(HexColor.BLACK);
+            getField(HexPoint.WEST).setColor(HexColor.WHITE);
+            getField(HexPoint.EAST).setColor(HexColor.WHITE);
+        } 
+        else 
+        {
+            getField(HexPoint.SOUTH).setColor(HexColor.EMPTY);
+            getField(HexPoint.WEST).setColor(HexColor.EMPTY);
+            getField(HexPoint.EAST).setColor(HexColor.EMPTY);
+        }
         repaint();
     }
 
@@ -187,7 +235,6 @@ public final class GuiBoard
             for (int i=0; i<m_field.length; i++) 
                 m_backup_field[i] = new GuiField(m_field[i]);
         }
-        
         m_dirty_stones = true;
     }
 
@@ -545,8 +592,6 @@ public final class GuiBoard
                 }
 	    }
 
-            //System.out.println("alphaontop = " + alphaontop);
-
 	    m_drawer.draw(m_image.getGraphics(), 
                           w, h, bw, bh, alphaontop, 
                           ff, arrows);
@@ -567,6 +612,7 @@ public final class GuiBoard
 
     private int m_width, m_height;
     private Dimension m_size;
+    private int m_mode;
 
     private Image m_image;
     private GuiField m_field[];

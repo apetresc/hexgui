@@ -503,6 +503,14 @@ public final class GuiMenuBar
 	m_btGroup.add(item);
 	menu.add(item);
 
+	item = new JRadioButtonMenuItem("Y");
+	item.addActionListener(m_listener);
+	item.setActionCommand("gui_board_draw_type");
+	if (defaultType.equals("Go"))
+	    item.setSelected(true);
+	m_btGroup.add(item);
+	menu.add(item);
+
 	return menu;
     }
 

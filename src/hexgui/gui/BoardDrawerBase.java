@@ -211,7 +211,11 @@ public abstract class BoardDrawerBase
 
 	int bw = calcBoardWidth();
 	int bh = calcBoardHeight();
-	m_marginX = (m_width - bw)/2 + m_fieldWidth/2;
+
+        // add a half cell's worth of empty space
+        int extra = (m_width - (bw + 3*m_fieldWidth));
+        m_marginX = extra/2 + 3*m_fieldWidth/2;
+
 	m_marginY = (m_height - bh)/2 + m_fieldHeight/2;
     }
 
