@@ -204,6 +204,16 @@ public final class GuiBoard
 	return m_size;
     }
 
+    public boolean isHexBoard()
+    {
+        return m_mode == HEXBOARD;
+    }
+
+    public boolean isYBoard() 
+    {
+        return m_mode == YBOARD;
+    }
+
     /** Clears all marks and stones from the board. */
     public void clearAll()
     {
@@ -412,6 +422,18 @@ public final class GuiBoard
                 return false;
         }
         return true;
+    }
+
+    public void swapColors() 
+    {
+        for (int x=0; x<m_field.length; x++) {
+            HexPoint point = m_field[x].getPoint();
+            if (point == HexPoint.NORTH || point == HexPoint.EAST ||
+                point == HexPoint.SOUTH || point == HexPoint.WEST)
+                continue;
+            HexColor color = m_field[x].getColor();
+            m_field[x].setColor(color.otherColor());
+        }
     }
 
     /** Stores the current state as a setup position in the

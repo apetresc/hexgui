@@ -1779,12 +1779,17 @@ public final class HexGui
 	}
 
         stopClock(m_tomove);
-        if (m_current.getMove().getPoint() != HexPoint.SWAP_PIECES)
+
+        if (m_guiboard.isYBoard() 
+            || m_current.getMove().getPoint() != HexPoint.SWAP_PIECES)
             cmdToggleToMove();
         startClock(m_tomove);
 
-	m_guiboard.setColor(m_current.getMove().getPoint(),
-                            m_current.getMove().getColor());
+        if (m_guiboard.isYBoard() && move.getPoint() == HexPoint.SWAP_PIECES)
+            m_guiboard.swapColors();
+        else
+            m_guiboard.setColor(m_current.getMove().getPoint(),
+                                m_current.getMove().getColor());
 
         m_guiboard.clearMarks();
 	markLastPlayedStone();
@@ -1919,7 +1924,11 @@ public final class HexGui
         if (node.hasMove())
         {
             Move move = node.getMove();
-            m_guiboard.setColor(move.getPoint(), HexColor.EMPTY);
+            if (m_guiboard.isYBoard() 
+                && move.getPoint() == HexPoint.SWAP_PIECES)
+                m_guiboard.swapColors();
+            else
+                m_guiboard.setColor(move.getPoint(), HexColor.EMPTY);
             htpUndo();
         }
         if (node.hasSetup())
@@ -2039,7 +2048,8 @@ public final class HexGui
         {
             // player to move is always opposite of last move
             m_tomove = m_current.getMove().getColor();
-            if (m_current.getMove().getPoint() != HexPoint.SWAP_PIECES)
+            if (m_guiboard.isYBoard() 
+                || m_current.getMove().getPoint() != HexPoint.SWAP_PIECES)
                 m_tomove = m_tomove.otherColor();
         }
         else if (m_current.hasSetup())
