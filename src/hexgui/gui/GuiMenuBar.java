@@ -329,6 +329,7 @@ public final class GuiMenuBar
 	String sizes[] = new String[] 
 	    {
                 "19 x 19",
+                "15 x 15",
                 "14 x 14",
 		"13 x 13",
 		"11 x 11",
