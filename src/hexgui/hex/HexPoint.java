@@ -28,19 +28,23 @@ public final class HexPoint implements Comparable
     public static final HexPoint RESIGN;
     public static final HexPoint INVALID;
 
-    public static final int MAX_WIDTH  = 19;
-    public static final int MAX_HEIGHT = 19;
+    public static final int MAX_WIDTH  = 40;
+    public static final int MAX_HEIGHT = 40;
     public static final int MAX_POINTS = MAX_WIDTH*MAX_HEIGHT + 7;
 
     public static final int DEFAULT_SIZE = 11;
 
     private static HexPoint s_points[];
+    public static final char[] X_COORDINATES = new char[] {
+	        'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
+    };
 
     static 
     {
 	s_points = new HexPoint[MAX_POINTS];
 
-        INVALID     = s_points[0] = new HexPoint(0, "invalid");
+    INVALID     = s_points[0] = new HexPoint(0, "invalid");
 	RESIGN      = s_points[1] = new HexPoint(1, "resign");
 	SWAP_PIECES = s_points[2] = new HexPoint(2, "swap-pieces");
 
@@ -51,7 +55,7 @@ public final class HexPoint implements Comparable
 
 	for (int y=0; y<MAX_HEIGHT; y++) {
 	    for (int x=0; x<MAX_WIDTH; x++) {
-		String name = "" + (char)('a' + x) + (y+1);
+		String name = "" + X_COORDINATES[x] + (y+1);
 		s_points[7 + y*MAX_WIDTH+ x] = new HexPoint(x, y, name);
 	    }
 	}

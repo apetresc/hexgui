@@ -120,7 +120,7 @@ public class BoardDrawerDiamond extends BoardDrawerBase
 	xoffset = 0;
 	for (int x=0; x<m_bwidth; x++) {
 	    if (alphatop)
-		string = Character.toString((char)((int)'A' + x));
+		string = Character.toString(HexPoint.X_COORDINATES[x]);
 	    else
 		string = Integer.toString(x+1);
 	    drawLabel(g, getLocation(x, -1), string, xoffset);
@@ -129,7 +129,7 @@ public class BoardDrawerDiamond extends BoardDrawerBase
 	xoffset = 0;	
 	for (int y=0; y<m_bheight; y++) {
 	    if (!alphatop)
-		string = Character.toString((char)((int)'A' + y));
+		string = Character.toString(HexPoint.X_COORDINATES[y]);
 	    else
 		string = Integer.toString(y+1);
 	    drawLabel(g, getLocation(-1, y), string, xoffset);
