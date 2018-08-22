@@ -103,7 +103,7 @@ public class BoardDrawerY extends BoardDrawerBase
 	xoffset = m_fieldWidth/2;
 	yoffset = 1;
 	for (int x=0; x<m_bwidth; x++) {
-            string = Character.toString((char)((int)'A' + x));
+            string = "" + HexPoint.printableXCoordinate(HexPoint.X_COORDINATES[x]);
 	    //drawLabel(g, getLocation(x, -1), string, xoffset);
 	    drawLabel(g, getLocation(x, m_bheight), string, xoffset);
 	}

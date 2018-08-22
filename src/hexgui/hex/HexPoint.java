@@ -28,19 +28,23 @@ public final class HexPoint implements Comparable
     public static final HexPoint RESIGN;
     public static final HexPoint INVALID;
 
-    public static final int MAX_WIDTH  = 19;
-    public static final int MAX_HEIGHT = 19;
+    public static final int MAX_WIDTH  = 50;
+    public static final int MAX_HEIGHT = 50;
     public static final int MAX_POINTS = MAX_WIDTH*MAX_HEIGHT + 7;
 
     public static final int DEFAULT_SIZE = 11;
 
     private static HexPoint s_points[];
+    public static final char[] X_COORDINATES = new char[] {
+	        'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
+    };
 
     static 
     {
 	s_points = new HexPoint[MAX_POINTS];
 
-        INVALID     = s_points[0] = new HexPoint(0, "invalid");
+    INVALID     = s_points[0] = new HexPoint(0, "invalid");
 	RESIGN      = s_points[1] = new HexPoint(1, "resign");
 	SWAP_PIECES = s_points[2] = new HexPoint(2, "swap-pieces");
 
@@ -51,10 +55,23 @@ public final class HexPoint implements Comparable
 
 	for (int y=0; y<MAX_HEIGHT; y++) {
 	    for (int x=0; x<MAX_WIDTH; x++) {
-		String name = "" + (char)('a' + x) + (y+1);
+		String name = "" + X_COORDINATES[x] + (y+1);
 		s_points[7 + y*MAX_WIDTH+ x] = new HexPoint(x, y, name);
 	    }
 	}
+    }
+
+    public static char printableXCoordinate(char c) {
+        int x = 0;
+        while (HexPoint.X_COORDINATES[x] != c) x++;
+
+        if (x < 8) {
+            return c;
+        } else if (x < 33) {
+            return HexPoint.X_COORDINATES[x + 1];
+        } else {
+            return HexPoint.X_COORDINATES[x + 2];
+        }
     }
 
     /** Returns the point with the given index.
@@ -99,7 +116,7 @@ public final class HexPoint implements Comparable
             return SWAP_PIECES;
 
         for (int x=0; x<MAX_POINTS; x++) 
-            if (name.equalsIgnoreCase(s_points[x].toString()))
+            if (name.equals(s_points[x].toString()))
                 return s_points[x];
         assert(false);
 	return null;
@@ -109,6 +126,16 @@ public final class HexPoint implements Comparable
     public String toString()
     {
 	return m_string;
+    }
+
+    /** Returns the human-readable representation of the point (with i and I x-coordinates removed for clarity). */
+    public String toDisplayString() {
+        for (int i = 0; i < 7; i++) {
+            if (s_points[i].toString() == m_string) {
+                return m_string;
+            }
+        }
+        return printableXCoordinate(m_string.charAt(0)) + m_string.substring(1);
     }
 
     /** Convert a list of points to a string.

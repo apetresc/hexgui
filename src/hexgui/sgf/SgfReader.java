@@ -192,7 +192,7 @@ public final class SgfReader
 
     private HexPoint parseMove(String s) throws SgfError
     {
-        s = s.trim().toLowerCase(Locale.ENGLISH);
+        s = s.trim();
         // HexPoint.get() handles special move values like "swap"
         HexPoint result = HexPoint.get(s);
         if (result == null)
