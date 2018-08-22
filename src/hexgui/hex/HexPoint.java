@@ -103,7 +103,7 @@ public final class HexPoint implements Comparable
             return SWAP_PIECES;
 
         for (int x=0; x<MAX_POINTS; x++) 
-            if (name.equalsIgnoreCase(s_points[x].toString()))
+            if (name.equals(s_points[x].toString()))
                 return s_points[x];
         assert(false);
 	return null;
