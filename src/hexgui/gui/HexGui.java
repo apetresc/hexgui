@@ -1766,7 +1766,7 @@ public final class HexGui
             {
                 if (m_guiboard.getColor(move.getPoint()) !=  HexColor.EMPTY)
                 {
-                    ShowError.msg(this, "Cell '" + move.getPoint().toString() +
+                    ShowError.msg(this, "Cell '" + move.getPoint().toDisplayString() +
                                   "' already occupied.");
                     return;
                 }
@@ -1796,8 +1796,8 @@ public final class HexGui
 	m_toolbar.updateButtonStates(m_current);
         m_menubar.updateMenuStates(m_current);
         m_statusbar.setMessage(m_current.getDepth() + " " 
-                               + move.getColor().toString() + " " 
-                               + move.getPoint().toString());
+                               + move.getColor().toString() + " "
+                               + move.getPoint().toDisplayString());
         setComment(m_current);
 
 	setGameChanged(true);
@@ -1837,7 +1837,7 @@ public final class HexGui
         htpPlay(move);
 
         m_statusbar.setMessage("Added setup stone (" + move.getColor().toString() +
-                               ", " + move.getPoint().toString() + ")");
+                               ", " + move.getPoint().toDisplayString() + ")");
 
         setGameChanged(true);
         setFrameTitle();
@@ -1910,7 +1910,7 @@ public final class HexGui
             {
                 m_statusbar.setMessage(node.getDepth() + " "
                                        + move.getColor().toString() + " "
-                                       + move.getPoint().toString());
+                                       + move.getPoint().toDisplayString());
             }
         }
         if (node.hasSetup())
@@ -1950,7 +1950,7 @@ public final class HexGui
             Move move = m_current.getMove();
             m_statusbar.setMessage(m_current.getDepth() + " " 
                                    + move.getColor().toString() + " " 
-                                   + move.getPoint().toString());
+                                   + move.getPoint().toDisplayString());
         }
         if (m_current.hasLabel())
             displayLabels(m_current);
