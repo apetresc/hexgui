@@ -52,7 +52,7 @@ Comment out the exec svnversion for releases.
 
 <target name="compile" depends="depend,version">
 <mkdir dir="build"/>
-<javac srcdir="src" destdir="build" source="1.7" target="1.7"
+<javac srcdir="src" destdir="build" source="1.8" target="1.8"
  deprecation="true" debug="true" listfiles="yes" includeantruntime="false">
 <compilerarg value="-Xlint:unchecked"/>
 </javac>
